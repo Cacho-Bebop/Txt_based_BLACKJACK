@@ -97,23 +97,31 @@ class player:
 
     def apostar(self, cantidad):
 
-        self.dinero = self.dinero - cantidad
-
         if self.dinero < 0:
+            
             print("\nParece ser que no tengo mas dinero.\nTendre que retirarme del juego.")
 
+        else:
+            
+            self.dinero = self.dinero - cantidad
 
     def recibir_dinero(self, cantidad):
-        
-        self.dinero = self.dinero + cantidad
+
+        #suma el dinero que ya posee el jugador + la cantidad
+
+        if cantidad <= 0:
+
+            print("\nOperacion invalida.")
+
+        else:    
+            self.dinero = self.dinero + cantidad
 
     def comenzar_a_jugar(self):
 
+
         self.jugando = True
 
-
 class croupier(player):
-
 
     def __init__(self, nombre, dinero):
         super().__init__(nombre, dinero)
@@ -125,6 +133,7 @@ class croupier(player):
 
 
     def repartir_carta(self):
-
+        
+        #saca una carta del mazo y la retorna
         return self.mazo.pop()
     

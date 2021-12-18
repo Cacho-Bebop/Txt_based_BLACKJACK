@@ -1,19 +1,14 @@
 from classes import *
+from mechanics import *
 
 game_on = True
-
-def bienvenida(name):
-
-    print(f"\nBienvenido al juego {name}")
-
-def reglas_juego():
-
-    print("\n--Reglas--\n> debes contar con un minimo de 50$\n> debes sumar 21 con las cartas, de lo contrario perderas tu apuesta\n> Si logras blackjack el pago es 3 a 2 ( lo apostado + 1/2 de lo apostado)")
 
 apuesta_minima = 50
 
 # comienzo del juego
 while game_on:
+
+    ronda = 1
 
     name = input("\nHola! ingresa tu nombre para comenzar a jugar Blackjack")
 
@@ -25,7 +20,7 @@ while game_on:
     player1 = player(name.title(), 500)
     
     #croupier:
-    john = croupier('John', 999)
+    c1 = croupier('John', 999)
 
 
     play = input("\nReady to play?( press key 'Y' to say yes)\n->  ")
@@ -35,39 +30,61 @@ while game_on:
         playing = True
 
     else:
-
-        
+  
         print("\nPress enter when you are ready")
 
     input("\nPress enter")
     playing = True
 
     # comenzar la partida 
-    #  
+    #  ! 1 player
+
     while playing:
+
+        # se crea el mazo
+        mazo = mazo()
+
+        # se mezcla el mazo
+        mazo.mezclar_cartas()
+
+        cartas_croupier = []
 
         player1.comenzar_a_jugar()
 
         print(f"\nCual es tu apuesta inicial? -> recuerda que lo apostado no puede ser menor a {apuesta_minima}.")
 
         ok = False
+
         while not ok:
+
             try:
+
                 apuesta_p1 = float(input("apuesto: "))
         
             except TypeError:
+                
                 print("\nPorfavor ingrese un numero")
-
 
             else: 
 
                 ok = True
                 print("\nMucha gracias por confiar en Bash Casino!\nDisfrute su juego!")
 
-
+        # se realiza apuesta
         player1.apostar(apuesta_p1)
 
+        # como se añaden 2 cartas al "mazo del croupier" que son las que se repartiran luego al jugador.
+        if ronda == 1:
 
+            for i in range(2):
+                cartas_croupier.append(c1.repartir_carta())           
+
+
+        # player 1 añade la carta su mano
+        player1.recibir_carta(cartas_croupier)
+        
+
+        cartas_croupier.clear()
 
 
 
