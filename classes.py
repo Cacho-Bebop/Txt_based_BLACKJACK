@@ -15,7 +15,7 @@ Cuando la primera carta del Croupier es un As, usted podrá asegurar su apuesta 
 """
 
 from random import shuffle
-from typing import List
+
 
 # data para hacer el objeto carta
 
@@ -23,7 +23,7 @@ palos = ("corazones", "diamantes", "treboles", "picas")
 rangos = ("as", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez", "rey", "reina", "comodin");
 
 valores = {'as': 1, 'dos': 2, 'tres': 3, 'cuatro': 4, 'cinco': 5, 'seis': 6,
-'siete': 7, 'ocho': 8, 'nueve': 9, 'diez': 10, 'rey': 10, 'reina': 10, 'comodin': 10}
+'siete': 7, 'ocho': 8, 'nueve': 9, 'diez': 10, 'rey': 10, 'reina': 10, 'comodin': 10, 'once': 11}
 #-------------------------------------------------------------------------
 
 # carta-------------------------------------------------------
@@ -41,7 +41,7 @@ class card:
 
 
 # mazo------------------------------------------------------
-class mazo:
+class Mazo:
 
     def __init__(self):
         self.full_deck = []
@@ -87,10 +87,12 @@ class player:
         if isinstance(carta, list):
         
             self.cartas.extend(carta)
+            return
         
-        else:
             
-            self.cartas.append(carta)
+        
+        
+        self.cartas.append(carta)
     
     def __str__(self) -> str:
         return "Hola! Soy" + self.nombre + "."    
@@ -116,10 +118,28 @@ class player:
         else:    
             self.dinero = self.dinero + cantidad
 
+    def contar_cartas(self):
+        
+        # metodo que cumple la funcion de devolver la suma de las cartas que el jugador posee
+
+        suma = 0
+
+        for cartas in self.cartas:
+            
+            suma = suma + valores[cartas.rango]
+
+        return suma
+
+
     def comenzar_a_jugar(self):
 
 
         self.jugando = True
+
+
+
+    def ver_dinero(self):
+        print(f"\n\nDinero: {self.dinero}$")
 
 class croupier(player):
 
@@ -135,5 +155,22 @@ class croupier(player):
     def repartir_carta(self):
         
         #saca una carta del mazo y la retorna
-        return self.mazo.pop()
+        
+        return self.cartas.pop()
     
+    def obtener_cartas(self):
+
+        suma = 0
+        ok = True
+        #reitra cartas hasta que la suma llegue al minimo de 17
+        while ok:
+              
+            suma = suma + self.cartas.pop()
+            
+            if suma >= 17:
+                
+                ok = False
+
+
+
+        return suma
